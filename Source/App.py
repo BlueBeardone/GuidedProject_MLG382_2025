@@ -4,7 +4,7 @@ import pandas as pd
 import joblib
 
 #Import model when complete
-model = joblib.load()
+model = joblib.load("import model here")
 
 app = dash.Dash(__name__)
 
@@ -29,6 +29,7 @@ app.layout = html.Div([
     html.Div(id='prediction-output')
 ])
 
+#Checks for change on predict btn then grabs inputs and does function and outputs in prediction-outputs as children
 @app.callback(
     Output('prediction-output', 'children'),
     Input('predict-button', 'n_clicks'),
