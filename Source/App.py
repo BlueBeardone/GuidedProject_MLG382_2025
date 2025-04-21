@@ -7,6 +7,7 @@ import joblib
 model = joblib.load("linieerregression.pkl")
 
 app = dash.Dash(__name__)
+app.run_server(debug=True)
 
 # Define Website layout in html
 app.layout = html.Div([
@@ -70,8 +71,7 @@ def predict(n_clicks, study_time, absences, TutoringYes, parental_support):
         return html.H3(f"Predicted Grade: {grades[prediction]}")
     return ""
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
+
 
 
 
