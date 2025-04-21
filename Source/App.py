@@ -59,7 +59,7 @@ app.layout = html.Div([
                         id='tutoring',
                         options=[
                             {'label': 'Yes', 'value': 1},
-                            {'label': 'No', 'value': 0}
+                            {'label': 'No', 'value': -1}
                         ],
                         value=1,
                         inline=True,
