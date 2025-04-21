@@ -136,7 +136,7 @@ def predict(n_clicks, study_time, absences, tutoring, GPA, Activities, StudentDi
                                   columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'ParentalSupport', 'GPA', 'Activity', 'StudentDiscriptors'])
         prediction = model.predict(input_data)[0]
         grades = prediction * 100
-        return html.H3(f"Predicted Grade: {round(grades)}")
+        return html.H3(f"Predicted Grade: {round(grades)}%")
     return ""
 
 if __name__ == '__main__':
