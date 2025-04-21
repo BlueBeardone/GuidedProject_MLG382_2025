@@ -27,8 +27,13 @@ app.layout = html.Div([
         html.Label("Number of Absences"),
         dcc.Input(id='absences', type='number', value=2),
 
-        html.Label("Recieving Tutoring"),
-        dcc.Input(id='Tutoring', type='radio', value="YES"),
+        dcc.RadioItems(
+            id='tutoring',
+            options=[
+                {'label': 'Yes', 'value': 1},
+                {'label': 'No', 'value': 0}
+            ],
+            value=0), 
         
         html.Label("Parental Support (0-4)"),
         dcc.Input(id='parental_support', type='number', value=3),
@@ -58,11 +63,8 @@ app.layout = html.Div([
 )
 def predict(n_clicks, study_time, absences, Tutoring, parental_support):
     if n_clicks:
-        tutoring = 0
-        if Tutoring == "YES":
-            tutoring = 1
         # Create input DataFrame for model
-        input_data = pd.DataFrame([[study_time, absences, tutoring, parental_support]],
+        input_data = pd.DataFrame([[study_time, absences, Tutoring, parental_support]],
                                   columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'ParentalSupport'])
         
         # Predicting GradeClass 
