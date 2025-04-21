@@ -7,6 +7,9 @@ import os
 model_path = os.path.join(os.path.dirname(__file__), 'linieerregression.pkl')
 model = joblib.load(model_path)
 
+scaler_path = os.path.join(os.path.dirname(__file__), 'scaler.pkl')
+scaler = joblib.load(scaler_path)
+
 app = Dash(__name__)
 server = app.server
 
@@ -132,9 +135,11 @@ app.layout = html.Div([
 def predict(n_clicks, study_time, absences, tutoring, GPA, Activities, StudentDiscriptors, parental_support):
     if n_clicks:
                                 #StudyTimeWeekly	Absences	Tutoring	ParentalSupport	GPA	Activity	StudentDiscriptors
-        input_data = pd.DataFrame([[study_time/10, absences/10, tutoring/10, parental_support/10, GPA/10, Activities/10, StudentDiscriptors/10]],
+        input_data = pd.DataFrame([[study_time, absences, tutoring, parental_support, GPA, Activities, StudentDiscriptors]],
                                   columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'ParentalSupport', 'GPA', 'Activity', 'StudentDiscriptors'])
-        prediction = model.predict(input_data)[0]
+        
+        input_scaled = scaler.transform(input_data)
+        prediction = model.predict(input_scaled)[0]
         grades = ['A', 'B', 'C', 'D', 'F']
         return html.H3(f"Predicted Grade: {grades[round(prediction)]}")
     return ""
