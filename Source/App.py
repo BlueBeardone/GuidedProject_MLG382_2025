@@ -4,7 +4,7 @@ import pandas as pd
 import joblib
 
 #Import model when complete
-model = joblib.load("import model here")
+model = joblib.load("linieerregression.pkl")
 
 app = dash.Dash(__name__)
 
