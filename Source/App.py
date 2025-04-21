@@ -131,8 +131,9 @@ app.layout = html.Div([
 )
 def predict(n_clicks, study_time, absences, tutoring, GPA, Activities, StudentDiscriptors, parental_support):
     if n_clicks:
-        input_data = pd.DataFrame([[study_time, absences, tutoring, GPA, Activities, StudentDiscriptors, parental_support]],
-                                  columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'GPA', 'Activity', 'StudentDiscriptors', 'ParentalSupport'])
+                                #StudyTimeWeekly	Absences	Tutoring	ParentalSupport	GPA	Activity	StudentDiscriptors
+        input_data = pd.DataFrame([[study_time, absences, tutoring, parental_support, GPA, Activities, StudentDiscriptors]],
+                                  columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'ParentalSupport', 'GPA', 'Activity', 'StudentDiscriptors'])
         prediction = model.predict(input_data)[0]
         grades = ['A', 'B', 'C', 'D', 'F']
         return html.H3(f"Predicted Grade: {grades[prediction]}")
