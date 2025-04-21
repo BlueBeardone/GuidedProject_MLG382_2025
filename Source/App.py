@@ -277,8 +277,8 @@ def predict(n_clicks, age, gender, ethnicity, parental_education, study_time, ab
     # Scale the input data using the same scaler used during training
     input_scaled = scaler.transform(input_data)
 
-    StudentDiscriptors = input_scaled[age] + input_scaled[gender] + input_scaled[ethnicity] + input_scaled[parental_education]
-    Activity = input_scaled[extracurricular] + input_scaled[music] + input_scaled[sports] + input_scaled[volunteering]
+    StudentDiscriptors = float(input_scaled[age]) + float(input_scaled[gender]) + float(input_scaled[ethnicity]) + float(input_scaled[parental_education])
+    Activity = float(input_scaled[extracurricular]) + float(input_scaled[music]) + float(input_scaled[sports]) + float(input_scaled[volunteering])
 
     #StudyTimeWeekly    Absences    Tutoring    ParentalSupport    GPA    Activity    StudentDiscriptors
     completed_Data = pd.DataFrame([[study_time, absences, tutoring, parental_support, gpa, Activity, StudentDiscriptors]], 
