@@ -279,7 +279,7 @@ def predict(n_clicks, age, gender, ethnicity, parental_education, study_time, ab
 
     StudentDiscriptors = float(input_scaled[0][0]) + float(input_scaled[0][1]) + float(input_scaled[0][2]) + float(input_scaled[0][3])
     Activity = float(input_scaled[0][8]) + float(input_scaled[0][9]) + float(input_scaled[0][10]) + float(input_scaled[0][11])
-    
+
     #StudyTimeWeekly    Absences    Tutoring    ParentalSupport    GPA    Activity    StudentDiscriptors
     completed_Data = pd.DataFrame([[study_time, absences, tutoring, parental_support, gpa, Activity, StudentDiscriptors]], 
                                   columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'ParentalSupport', 'GPA', 'Activity', 'StudentDiscriptors'])
@@ -291,9 +291,9 @@ def predict(n_clicks, age, gender, ethnicity, parental_education, study_time, ab
     
     # Provide additional context based on prediction
     if predicted_grade in ['D', 'F']:
-        message = f"Predicted Grade: {predicted_grade} - This student may be at risk. Consider interventions like tutoring or attendance monitoring."
+        message = f"Predicted Grade: {predicted_grade} - This student may be at risk. Consider interventions like tutoring or attendance monitoring. {prediction}"
     else:
-        message = f"Predicted Grade: {predicted_grade}"
+        message = f"Predicted Grade: {predicted_grade} {prediction}%"
     
     return html.H3(message, style={'color': '#2c3e50'})
 
