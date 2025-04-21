@@ -4,7 +4,7 @@ import joblib
 import os
 
 # Load model
-model_path = os.path.join(os.path.dirname(__file__), 'linearregression.pkl')
+model_path = os.path.join(os.path.dirname(__file__), 'linieerregression.pkl')
 model = joblib.load(model_path)
 
 app = Dash(__name__)
