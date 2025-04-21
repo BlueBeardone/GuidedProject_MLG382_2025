@@ -132,11 +132,11 @@ app.layout = html.Div([
 def predict(n_clicks, study_time, absences, tutoring, GPA, Activities, StudentDiscriptors, parental_support):
     if n_clicks:
                                 #StudyTimeWeekly	Absences	Tutoring	ParentalSupport	GPA	Activity	StudentDiscriptors
-        input_data = pd.DataFrame([[study_time, absences, tutoring, parental_support, GPA/10, Activities, StudentDiscriptors]],
+        input_data = pd.DataFrame([[study_time/10, absences/10, tutoring/10, parental_support/10, GPA/10, Activities/10, StudentDiscriptors/10]],
                                   columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'ParentalSupport', 'GPA', 'Activity', 'StudentDiscriptors'])
         prediction = model.predict(input_data)[0]
         grades = ['A', 'B', 'C', 'D', 'F']
-        return html.H3(f"Predicted Grade: {grades[round(prediction)]} {prediction}%")
+        return html.H3(f"Predicted Grade: {grades[round(prediction)]}")
     return ""
 
 if __name__ == '__main__':
