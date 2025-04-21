@@ -1,12 +1,14 @@
+
+from dash import Dash, dcc, html, Input, Output
 import dash
-from dash import dcc, html, Input, Output
+
 import pandas as pd
 import joblib
 
 #Import model when complete
 model = joblib.load("linieerregression.pkl")
 
-app = dash.Dash(__name__)
+app = Dash(__name__)
 if __name__ == '__main__':
     app.run_server(debug=True)
 
