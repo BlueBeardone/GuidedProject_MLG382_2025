@@ -1,4 +1,4 @@
-import dash 
+import dash
 from dash import dcc, html, Input, Output
 import pandas as pd
 import joblib
@@ -7,7 +7,8 @@ import joblib
 model = joblib.load("linieerregression.pkl")
 
 app = dash.Dash(__name__)
-app.run_server(debug=True)
+if __name__ == '__main__':
+    app.run_server(debug=True)
 
 # Define Website layout in html
 app.layout = html.Div([
