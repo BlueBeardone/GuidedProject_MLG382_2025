@@ -25,6 +25,14 @@ app.layout = html.Div([
     
     html.Div(
         [
+            # GPA
+            html.Div(
+                [
+                    html.Label("GPA", style={'fontWeight': 'bold', 'marginBottom': '5px'}),
+                    dcc.Input(id='GPA', type='number', value=2, style={'width': '100%', 'padding': '8px'})
+                ],
+                style={'marginBottom': '15px'}
+            ),
             # Study Time Input
             html.Div(
                 [
@@ -60,12 +68,28 @@ app.layout = html.Div([
                 ],
                 style={'marginBottom': '15px'}
             ),
+
+            html.Div(
+                [
+                    html.Label("Amount of Activiries?", style={'fontWeight': 'bold', 'marginBottom': '5px'}),
+                    dcc.Input(id='Activities', type='number', value=3, style={'width': '100%', 'padding': '8px'})
+                ],
+                style={'marginBottom': '15px'}
+            ),
             
             # Parental Support Input
             html.Div(
                 [
                     html.Label("Parental Support (0-4)", style={'fontWeight': 'bold', 'marginBottom': '5px'}),
                     dcc.Input(id='parental_support', type='number', value=3, style={'width': '100%', 'padding': '8px'})
+                ],
+                style={'marginBottom': '15px'}
+            ),
+            #Student Descriptors and yes I have no idea how to do this will need more time
+            html.Div(
+                [
+                    html.Label("Student Description", style={'fontWeight': 'bold', 'marginBottom': '5px'}),
+                    dcc.Input(id='StudentDiscriptors', type='number', value=3, style={'width': '100%', 'padding': '8px'})
                 ],
                 style={'marginBottom': '15px'}
             ),
@@ -100,12 +124,15 @@ app.layout = html.Div([
     [Input('study_time', 'value'),
      Input('absences', 'value'),
      Input('tutoring', 'value'),
+     Input('GPA', 'value'),
+     Input('Activities', 'value'),
+     Input('StudentDiscriptors', 'value'),
      Input('parental_support', 'value')]
 )
-def predict(n_clicks, study_time, absences, tutoring, parental_support):
+def predict(n_clicks, study_time, absences, tutoring, GPA, Activities, StudentDiscriptors, parental_support):
     if n_clicks:
-        input_data = pd.DataFrame([[study_time, absences, tutoring, parental_support]],
-                                  columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'ParentalSupport'])
+        input_data = pd.DataFrame([[study_time, absences, tutoring, GPA, Activities, StudentDiscriptors, parental_support]],
+                                  columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'GPA', 'StudentDiscriptors', 'ParentalSupport'])
         prediction = model.predict(input_data)[0]
         grades = ['A', 'B', 'C', 'D', 'F']
         return html.H3(f"Predicted Grade: {grades[prediction]}")
