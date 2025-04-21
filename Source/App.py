@@ -1,13 +1,15 @@
 from dash import Dash, dcc, html, Input, Output
 import pandas as pd
 import joblib
+import os
 
+model_path = os.path.join(os.path.dirname(__file__), 'linieerregression.pkl')
 #Import model when complete
-model = joblib.load("linieerregression.pkl")
+model = joblib.load(model_path)
 
 app = Dash(__name__)
-if __name__ == '__main__':
-    app.run_server(debug=True)
+server = app.server
+
 
 # Define Website layout in html
 app.layout = html.Div([
@@ -26,7 +28,7 @@ app.layout = html.Div([
         dcc.Input(id='absences', type='number', value=2),
 
         html.Label("Recieving Tutoring"),
-        dcc.Input(id='TutoringYes', type='radio', value="YES"),
+        dcc.Input(id='Tutoring', type='radio', value="YES"),
         
         html.Label("Parental Support (0-4)"),
         dcc.Input(id='parental_support', type='number', value=3),
@@ -51,14 +53,13 @@ app.layout = html.Div([
     Input('predict-button', 'n_clicks'),
     [Input('study_time', 'value'),
      Input('absences', 'value'),
-     Input('TutoringYes', 'value'),
-     Input('TutoringNo', 'value'),
+     Input('Tutoring', 'value'),
      Input('parental_support', 'value')]
 )
-def predict(n_clicks, study_time, absences, TutoringYes, parental_support):
+def predict(n_clicks, study_time, absences, Tutoring, parental_support):
     if n_clicks:
         tutoring = 0
-        if TutoringYes == "yes":
+        if Tutoring == "YES":
             tutoring = 1
         # Create input DataFrame for model
         input_data = pd.DataFrame([[study_time, absences, tutoring, parental_support]],
@@ -70,6 +71,9 @@ def predict(n_clicks, study_time, absences, TutoringYes, parental_support):
         
         return html.H3(f"Predicted Grade: {grades[prediction]}")
     return ""
+
+if __name__ == '__main__':
+     app.run_server(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=False)
 
 
 
