@@ -42,7 +42,7 @@ app.layout = html.Div([
         }),
     
     html.Div(id='prediction-output', style={'textAlign': 'center', 'marginTop': '20px', 'fontSize': '20px'})
-], style={'backgroundColor': '#Green', 'minHeight': '100vh'})
+], style={'backgroundColor': 'Green', 'minHeight': '100vh'})
 
 #Checks for change on predict btn then grabs inputs and does function and outputs in prediction-outputs as children
 @app.callback(
