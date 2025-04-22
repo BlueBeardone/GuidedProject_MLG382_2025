@@ -78,11 +78,11 @@ app.layout = html.Div([
                     dcc.Dropdown(
                         id='parental_education',
                         options=[
-                            {'label': 'None', 'value': 0},
-                            {'label': 'High School', 'value': 1},
-                            {'label': 'Some College', 'value': 2},
-                            {'label': "Bachelor's", 'value': 3},
-                            {'label': 'Higher Study', 'value': 4}
+                            {'label': 'None', 'value': -2},
+                            {'label': 'High School', 'value': -1},
+                            {'label': 'Some College', 'value': 0},
+                            {'label': "Bachelor's", 'value': 1},
+                            {'label': 'Higher Study', 'value': 2}
                         ],
                         value=2,
                         style={'width': '100%'}
@@ -114,7 +114,7 @@ app.layout = html.Div([
                         id='tutoring',
                         options=[
                             {'label': 'Yes', 'value': 1},
-                            {'label': 'No', 'value': 0}
+                            {'label': 'No', 'value': -1}
                         ],
                         value=1,
                         inline=True,
@@ -130,11 +130,11 @@ app.layout = html.Div([
                     dcc.Dropdown(
                         id='parental_support',
                         options=[
-                            {'label': 'None', 'value': 0},
-                            {'label': 'Low', 'value': 1},
-                            {'label': 'Moderate', 'value': 2},
-                            {'label': 'High', 'value': 3},
-                            {'label': 'Very High', 'value': 4}
+                            {'label': 'None', 'value': -2},
+                            {'label': 'Low', 'value': -1},
+                            {'label': 'Moderate', 'value': 0},
+                            {'label': 'High', 'value': 1},
+                            {'label': 'Very High', 'value': 2}
                         ],
                         value=3,
                         style={'width': '100%'}
@@ -150,7 +150,7 @@ app.layout = html.Div([
                         id='extracurricular',
                         options=[
                             {'label': 'Yes', 'value': 1},
-                            {'label': 'No', 'value': 0}
+                            {'label': 'No', 'value': -1}
                         ],
                         value=0,
                         inline=True,
@@ -167,7 +167,7 @@ app.layout = html.Div([
                         id='sports',
                         options=[
                             {'label': 'Yes', 'value': 1},
-                            {'label': 'No', 'value': 0}
+                            {'label': 'No', 'value': -1}
                         ],
                         value=0,
                         inline=True,
@@ -184,7 +184,7 @@ app.layout = html.Div([
                         id='music',
                         options=[
                             {'label': 'Yes', 'value': 1},
-                            {'label': 'No', 'value': 0}
+                            {'label': 'No', 'value': -1}
                         ],
                         value=0,
                         inline=True,
@@ -201,7 +201,7 @@ app.layout = html.Div([
                         id='volunteering',
                         options=[
                             {'label': 'Yes', 'value': 1},
-                            {'label': 'No', 'value': 0}
+                            {'label': 'No', 'value': -1}
                         ],
                         value=0,
                         inline=True,
@@ -282,7 +282,7 @@ def predict(n_clicks, age, gender, ethnicity, parental_education, study_time, ab
     Activity = float(input_scaled[0][8]) + float(input_scaled[0][9]) + float(input_scaled[0][10]) + float(input_scaled[0][11])
 
     #StudyTimeWeekly    Absences    Tutoring    ParentalSupport    GPA    Activity    StudentDiscriptors
-    completed_Data = pd.DataFrame([[study_time, absences, tutoring, parental_support, gpa, Activity, StudentDiscriptors]], 
+    completed_Data = pd.DataFrame([[study_time, -absences, tutoring, parental_support, gpa, Activity, StudentDiscriptors]], 
                                   columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'ParentalSupport', 'GPA', 'Activity', 'StudentDiscriptors'])
     
     # Make prediction
