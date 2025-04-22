@@ -5,7 +5,7 @@ import os
 import numpy as np
 
 # Load the trained Random Forest model and the scaler used during training
-model_path = os.path.join(os.path.dirname(__file__), 'linieerregression.pkl')
+model_path = os.path.join(os.path.dirname(__file__), 'randomforest.pkl')
 scaler_path = os.path.join(os.path.dirname(__file__), 'scaler.pkl')
 model = joblib.load(model_path)
 scaler = joblib.load(scaler_path)
@@ -43,7 +43,7 @@ app.layout = html.Div([
                     dcc.RadioItems(
                         id='gender',
                         options=[
-                            {'label': 'Male', 'value': 0},
+                            {'label': 'Male', 'value': -1},
                             {'label': 'Female', 'value': 1}
                         ],
                         value=0,
@@ -60,10 +60,10 @@ app.layout = html.Div([
                     dcc.Dropdown(
                         id='ethnicity',
                         options=[
-                            {'label': 'Caucasian', 'value': 0},
+                            {'label': 'Caucasian', 'value': 0.5},
                             {'label': 'African American', 'value': 1},
-                            {'label': 'Asian', 'value': 2},
-                            {'label': 'Other', 'value': 3}
+                            {'label': 'Asian', 'value': 1.5},
+                            {'label': 'Other', 'value': 2}
                         ],
                         value=0,
                         style={'width': '100%'}
@@ -78,11 +78,11 @@ app.layout = html.Div([
                     dcc.Dropdown(
                         id='parental_education',
                         options=[
-                            {'label': 'None', 'value': -2},
-                            {'label': 'High School', 'value': -1},
-                            {'label': 'Some College', 'value': 0},
-                            {'label': "Bachelor's", 'value': 1},
-                            {'label': 'Higher Study', 'value': 2}
+                            {'label': 'None', 'value': 0.5},
+                            {'label': 'High School', 'value': 1},
+                            {'label': 'Some College', 'value': 1.5},
+                            {'label': "Bachelor's", 'value': 2},
+                            {'label': 'Higher Study', 'value': 2.5}
                         ],
                         value=2,
                         style={'width': '100%'}
@@ -114,7 +114,7 @@ app.layout = html.Div([
                         id='tutoring',
                         options=[
                             {'label': 'Yes', 'value': 1},
-                            {'label': 'No', 'value': -1}
+                            {'label': 'No', 'value': 0}
                         ],
                         value=1,
                         inline=True,
@@ -150,7 +150,7 @@ app.layout = html.Div([
                         id='extracurricular',
                         options=[
                             {'label': 'Yes', 'value': 1},
-                            {'label': 'No', 'value': -1}
+                            {'label': 'No', 'value': 0}
                         ],
                         value=0,
                         inline=True,
@@ -167,7 +167,7 @@ app.layout = html.Div([
                         id='sports',
                         options=[
                             {'label': 'Yes', 'value': 1},
-                            {'label': 'No', 'value': -1}
+                            {'label': 'No', 'value': 0}
                         ],
                         value=0,
                         inline=True,
@@ -184,7 +184,7 @@ app.layout = html.Div([
                         id='music',
                         options=[
                             {'label': 'Yes', 'value': 1},
-                            {'label': 'No', 'value': -1}
+                            {'label': 'No', 'value': 0}
                         ],
                         value=0,
                         inline=True,
@@ -201,7 +201,7 @@ app.layout = html.Div([
                         id='volunteering',
                         options=[
                             {'label': 'Yes', 'value': 1},
-                            {'label': 'No', 'value': -1}
+                            {'label': 'No', 'value': 0}
                         ],
                         value=0,
                         inline=True,
@@ -282,20 +282,19 @@ def predict(n_clicks, age, gender, ethnicity, parental_education, study_time, ab
     Activity = float(input_scaled[0][8]) + float(input_scaled[0][9]) + float(input_scaled[0][10]) + float(input_scaled[0][11])
 
     #StudyTimeWeekly    Absences    Tutoring    ParentalSupport    GPA    Activity    StudentDiscriptors
-    completed_Data = pd.DataFrame([[study_time, absences, tutoring, parental_support, gpa, Activity, StudentDiscriptors]], 
+    completed_Data = pd.DataFrame([[study_time, -absences, tutoring, parental_support, gpa, Activity, StudentDiscriptors]], 
                                   columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'ParentalSupport', 'GPA', 'Activity', 'StudentDiscriptors'])
     
     # Make prediction
     prediction = model.predict(completed_Data)[0]
-    predictionWrite = prediction
     grades = ['A', 'B', 'C', 'D', 'F']
     predicted_grade = grades[int(prediction)]
     
     # Provide additional context based on prediction
     if predicted_grade in ['D', 'F']:
-        message = f"Predicted Grade: {predicted_grade} - This student may be at risk. Consider interventions like tutoring or attendance monitoring. {predictionWrite}"
+        message = f"Predicted Grade: {predicted_grade} - This student may be at risk. Consider interventions like tutoring or attendance monitoring."
     else:
-        message = f"Predicted Grade: {predicted_grade} {predictionWrite}%"
+        message = f"Predicted Grade: {predicted_grade}"
     
     return html.H3(message, style={'color': '#2c3e50'})
 
