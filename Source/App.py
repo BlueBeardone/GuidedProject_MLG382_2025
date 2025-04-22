@@ -5,7 +5,7 @@ import os
 import numpy as np
 
 # Load the trained Random Forest model and the scaler used during training
-model_path = os.path.join(os.path.dirname(__file__), 'randomforest.pkl')
+model_path = os.path.join(os.path.dirname(__file__), 'linieerregression.pkl')
 scaler_path = os.path.join(os.path.dirname(__file__), 'scaler.pkl')
 model = joblib.load(model_path)
 scaler = joblib.load(scaler_path)
@@ -270,16 +270,17 @@ def predict(n_clicks, age, gender, ethnicity, parental_education, study_time, ab
     if any(x is None for x in inputs):
         return html.H3("Please fill in all fields.", style={'color': 'red'})
     
-    # Prepare input data in the same order as training features
+    # Prepare input data 
     input_data = pd.DataFrame([[age, gender, ethnicity, parental_education, study_time, absences, tutoring, parental_support, extracurricular, sports, music, volunteering, gpa]],
                               columns=['Age', 'Gender', 'Ethnicity', 'ParentalEducation', 'StudyTimeWeekly', 'Absences', 'Tutoring', 'ParentalSupport', 'Extracurricular', 'Sports', 'Music', 'Volunteering', 'GPA'])
     
     # Scale the input data using the same scaler used during training
     input_scaled = scaler.transform(input_data)
 
+    #New colomns based on model
     StudentDiscriptors = float(input_scaled[0][0]) + float(input_scaled[0][1]) + float(input_scaled[0][2]) + float(input_scaled[0][3])
     Activity = float(input_scaled[0][8]) + float(input_scaled[0][9]) + float(input_scaled[0][10]) + float(input_scaled[0][11])
-    
+
     #StudyTimeWeekly    Absences    Tutoring    ParentalSupport    GPA    Activity    StudentDiscriptors
     completed_Data = pd.DataFrame([[study_time, absences, tutoring, parental_support, gpa, Activity, StudentDiscriptors]], 
                                   columns=['StudyTimeWeekly', 'Absences', 'Tutoring', 'ParentalSupport', 'GPA', 'Activity', 'StudentDiscriptors'])
@@ -291,9 +292,9 @@ def predict(n_clicks, age, gender, ethnicity, parental_education, study_time, ab
     
     # Provide additional context based on prediction
     if predicted_grade in ['D', 'F']:
-        message = f"Predicted Grade: {predicted_grade} - This student may be at risk. Consider interventions like tutoring or attendance monitoring."
+        message = f"Predicted Grade: {predicted_grade} - This student may be at risk. Consider interventions like tutoring or attendance monitoring. {prediction}"
     else:
-        message = f"Predicted Grade: {predicted_grade}"
+        message = f"Predicted Grade: {predicted_grade} {prediction}%"
     
     return html.H3(message, style={'color': '#2c3e50'})
 
